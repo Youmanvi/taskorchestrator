@@ -2,6 +2,9 @@ package observability
 
 import (
 	"context"
+	"crypto/rand"
+	"encoding/hex"
+	"fmt"
 	"io"
 	"os"
 	"strings"
@@ -15,6 +18,7 @@ const TraceIDKey = "trace_id"
 
 type Logger struct {
 	*zerolog.Logger
+	repo *LogRepository
 }
 
 // NewLogger creates a new structured logger based on configuration
@@ -36,7 +40,12 @@ func NewLogger(cfg *config.ObservabilityConfig) *Logger {
 		Timestamp().
 		Logger()
 
-	return &Logger{Logger: &logger}
+	return &Logger{Logger: &logger, repo: nil}
+}
+
+// SetLogRepository attaches a log repository for persistence
+func (l *Logger) SetLogRepository(repo *LogRepository) {
+	l.repo = repo
 }
 
 // WithTraceID returns a new logger with trace ID attached
@@ -99,5 +108,24 @@ func parseLogLevel(levelStr string) zerolog.Level {
 // GetGlobalLogger returns the global logger
 func GetGlobalLogger() *Logger {
 	logger := log.Logger
-	return &Logger{Logger: &logger}
+	return &Logger{Logger: &logger, repo: nil}
+}
+
+// WriteLogRecord writes a log record to the repository if configured
+func (l *Logger) WriteLogRecord(record *LogRecord) error {
+	if l.repo == nil {
+		return nil // Repository not configured, skip
+	}
+	return l.repo.WriteLog(record)
+}
+
+// GenerateCryptographicTraceID creates a cryptographically random trace ID
+func GenerateCryptographicTraceID() (string, error) {
+	// 16 bytes = 128 bits (W3C Trace Context standard)
+	b := make([]byte, 16)
+	_, err := rand.Read(b)
+	if err != nil {
+		return "", fmt.Errorf("failed to generate random trace ID: %w", err)
+	}
+	return hex.EncodeToString(b), nil
 }
