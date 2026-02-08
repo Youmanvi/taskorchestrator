@@ -1,0 +1,24 @@
+app:
+  name: task-orchestrator
+  port: 8080
+  timeout: 30s
+
+backend:
+  type: sqlite
+  sqliteFile: data/orchestration.db
+  maxConnection: 25
+
+observability:
+  logLevel: debug
+  logFormat: text
+  metricsEnabled: true
+  metricsPort: 9090
+  tracingEnabled: true
+  zipkinEndpoint: http://localhost:9411/api/v2/spans
+
+activities:
+  retryMaxAttempts: 3
+  retryBackoffMs: 100
+  timeoutSeconds: 30
+  circuitBreakerThreshold: 0.5
+  circuitBreakerTimeout: 10s
