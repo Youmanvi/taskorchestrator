@@ -1,0 +1,71 @@
+# Claude Code project files
+.claude/
+
+# Go build artifacts
+*.exe
+*.exe~
+*.dll
+*.so
+*.so.*
+*.dylib
+orchestrator
+worker
+
+# Test files
+*.test
+coverage.out
+coverage.html
+test.log
+
+# Go workspace
+go.work
+go.sum
+
+# Dependency directories
+vendor/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.sublime-project
+.sublime-workspace
+*.iml
+*.iws
+*.ipr
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Data and runtime files
+data/
+!data/.gitkeep
+*.db
+*.db-shm
+*.db-wal
+
+# Environment and configuration
+.env
+.env.local
+.env.*.local
+.env.production
+
+# Logs and output
+*.log
+logs/
+*.out
+
+# IDE-specific
+*.pem
+*.key
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
