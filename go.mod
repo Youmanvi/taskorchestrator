@@ -14,4 +14,5 @@ require (
 	github.com/stretchr/testify v1.8.4
 	github.com/shopspring/decimal v1.3.1
 	github.com/sony/gobreaker v0.5.0
+	github.com/mattn/go-sqlite3 v1.14.19
 )
