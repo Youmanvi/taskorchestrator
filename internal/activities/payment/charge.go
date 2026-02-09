@@ -7,8 +7,8 @@ import (
 	"math/rand"
 
 	"github.com/shopspring/decimal"
-	"github.com/vihan/taskorchestrator/internal/domain"
-	"github.com/vihan/taskorchestrator/internal/pkg/errors"
+	"github.com/Youmanvi/taskorchestrator/internal/domain"
+	"github.com/Youmanvi/taskorchestrator/internal/pkg/errors"
 )
 
 // ChargePaymentInput is the input for charging a payment
