@@ -4,8 +4,8 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/vihan/taskorchestrator/internal/domain"
-	"github.com/vihan/taskorchestrator/internal/pkg/errors"
+	"github.com/Youmanvi/taskorchestrator/internal/domain"
+	"github.com/Youmanvi/taskorchestrator/internal/pkg/errors"
 )
 
 // CheckAvailabilityInput is the input for checking inventory availability
