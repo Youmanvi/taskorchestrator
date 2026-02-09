@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/vihan/taskorchestrator/internal/domain"
-	"github.com/vihan/taskorchestrator/internal/pkg/errors"
+	"github.com/Youmanvi/taskorchestrator/internal/domain"
+	"github.com/Youmanvi/taskorchestrator/internal/pkg/errors"
 )
 
 // ReserveInventoryInput is the input for reserving inventory
