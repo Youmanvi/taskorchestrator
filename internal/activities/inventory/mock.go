@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/vihan/taskorchestrator/internal/domain"
+	"github.com/Youmanvi/taskorchestrator/internal/domain"
 )
 
 // MockInventoryManager is a mock implementation of InventoryManager for testing
