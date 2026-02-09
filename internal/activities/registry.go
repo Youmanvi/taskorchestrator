@@ -4,11 +4,11 @@ import (
 	"time"
 
 	"github.com/microsoft/durabletask-go/api"
-	"github.com/vihan/taskorchestrator/internal/activities/inventory"
-	"github.com/vihan/taskorchestrator/internal/activities/notification"
-	"github.com/vihan/taskorchestrator/internal/activities/payment"
-	"github.com/vihan/taskorchestrator/internal/infrastructure/observability"
-	"github.com/vihan/taskorchestrator/internal/middleware"
+	"github.com/Youmanvi/taskorchestrator/internal/activities/inventory"
+	"github.com/Youmanvi/taskorchestrator/internal/activities/notification"
+	"github.com/Youmanvi/taskorchestrator/internal/activities/payment"
+	"github.com/Youmanvi/taskorchestrator/internal/infrastructure/observability"
+	"github.com/Youmanvi/taskorchestrator/internal/middleware"
 )
 
 // ActivityDeps contains dependencies for all activities
