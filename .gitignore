@@ -69,3 +69,5 @@ logs/
 .vscode/*
 !.vscode/settings.json
 !.vscode/extensions.json
+docs/OBSERVABILITY.md
+docs/OTLP_INTEGRATION.md
