@@ -73,11 +73,13 @@ func NewActivityRegistry(deps *ActivityDeps) *api.TaskActivityRegistry {
 
 // registerActivity registers an activity with middleware
 func registerActivity(registry *api.TaskActivityRegistry, name string, activity middleware.ActivityFunc, deps *ActivityDeps) {
-	// Apply middleware chain
+	// Apply middleware chain (order matters - innermost to outermost)
 	wrapped := middleware.ApplyMiddleware(
 		activity,
 		middleware.WithLogging(deps.Logger, name),
 		middleware.WithTimeout(deps.TimeoutDuration),
+		// gRPC error handling BEFORE retry so transient errors are classified correctly
+		middleware.WithGRPCErrorHandling(),
 		middleware.WithRetry(deps.Logger, deps.RetryPolicy),
 	)
 
