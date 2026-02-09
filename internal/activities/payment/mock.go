@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/shopspring/decimal"
-	"github.com/vihan/taskorchestrator/internal/domain"
+	"github.com/Youmanvi/taskorchestrator/internal/domain"
 )
 
 // MockPaymentGateway is a mock implementation of PaymentGateway for testing
