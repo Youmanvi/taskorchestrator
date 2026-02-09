@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/vihan/taskorchestrator/internal/pkg/errors"
+	"github.com/Youmanvi/taskorchestrator/internal/pkg/errors"
 )
 
 // EmailNotificationInput is the input for sending email notifications
