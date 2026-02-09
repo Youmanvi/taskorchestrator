@@ -1,23 +1,12 @@
 package backend
 
 import (
-	"fmt"
-	"strings"
-
 	"github.com/microsoft/durabletask-go/backend"
 	"github.com/vihan/taskorchestrator/internal/infrastructure/config"
 )
 
-// NewBackend creates a new backend based on configuration
+// NewBackend creates a new SQLite backend
+// In-memory backends are not supported as all analysis requires persistent SQLite storage
 func NewBackend(cfg *config.BackendConfig) (backend.Backend, error) {
-	backendType := strings.ToLower(cfg.Type)
-
-	switch backendType {
-	case "sqlite":
-		return NewSQLiteBackend(cfg)
-	case "memory":
-		return NewInMemoryBackend(), nil
-	default:
-		return nil, fmt.Errorf("unsupported backend type: %s", cfg.Type)
-	}
+	return NewSQLiteBackend(cfg)
 }

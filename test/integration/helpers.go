@@ -3,6 +3,8 @@ package integration
 import (
 	"context"
 	"encoding/json"
+	"fmt"
+	"os"
 	"time"
 
 	"github.com/microsoft/durabletask-go/api"
@@ -11,6 +13,7 @@ import (
 	"github.com/vihan/taskorchestrator/internal/activities/notification"
 	"github.com/vihan/taskorchestrator/internal/activities/payment"
 	"github.com/vihan/taskorchestrator/internal/infrastructure/backend"
+	"github.com/vihan/taskorchestrator/internal/infrastructure/config"
 	"github.com/vihan/taskorchestrator/internal/infrastructure/observability"
 	"github.com/vihan/taskorchestrator/internal/middleware"
 	"github.com/vihan/taskorchestrator/internal/workflows"
@@ -26,12 +29,23 @@ type TestHarness struct {
 	PaymentGateway  *payment.MockPaymentGateway
 	InventoryMgr    *inventory.MockInventoryManager
 	EmailService    *notification.MockEmailService
+	DBFile          string
 }
 
-// NewTestHarness creates a new test harness with in-memory backend
+// NewTestHarness creates a new test harness with SQLite backend
 func NewTestHarness() (*TestHarness, error) {
-	// Create in-memory backend
-	be := backend.NewInMemoryBackend()
+	// Create temporary SQLite database for testing
+	dbFile := fmt.Sprintf("%s/test-orchestrator-%d.db", os.TempDir(), time.Now().UnixNano())
+
+	cfg := &config.BackendConfig{
+		SQLiteFile:    dbFile,
+		MaxConnection: 10,
+	}
+
+	be, err := backend.NewSQLiteBackend(cfg)
+	if err != nil {
+		return nil, err
+	}
 
 	// Create logger
 	logger := observability.NewLogger(&observability.ObservabilityConfig{
@@ -82,6 +96,7 @@ func NewTestHarness() (*TestHarness, error) {
 		PaymentGateway: paymentGateway,
 		InventoryMgr:   inventoryMgr,
 		EmailService:   emailService,
+		DBFile:         dbFile,
 	}, nil
 }
 
@@ -93,9 +108,12 @@ func (h *TestHarness) Start(ctx context.Context) error {
 	return nil
 }
 
-// Stop stops the worker
+// Stop stops the worker and cleans up temporary database
 func (h *TestHarness) Stop(ctx context.Context) error {
-	return h.Worker.Stop(ctx)
+	err := h.Worker.Stop(ctx)
+	// Clean up temporary database file
+	os.Remove(h.DBFile)
+	return err
 }
 
 // ScheduleOrder schedules an order processing orchestration

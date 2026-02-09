@@ -21,7 +21,7 @@ type AppConfig struct {
 }
 
 type BackendConfig struct {
-	Type          string // "sqlite" or "memory"
+	// Only SQLite is supported - in-memory backends are not compatible with persistent query-based analysis
 	SQLiteFile    string
 	MaxConnection int
 }
@@ -92,9 +92,6 @@ func LoadConfig(configPath string) (*Config, error) {
 	viper.SetEnvPrefix("APP")
 	viper.AutomaticEnv()
 
-	if backend := os.Getenv("APP_BACKEND_TYPE"); backend != "" {
-		cfg.Backend.Type = backend
-	}
 	if sqliteFile := os.Getenv("APP_BACKEND_SQLITE_FILE"); sqliteFile != "" {
 		cfg.Backend.SQLiteFile = sqliteFile
 	}

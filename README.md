@@ -8,9 +8,9 @@ A comprehensive implementation of a distributed task orchestration system in Go 
 - **Real-World Use Case**: Complete order processing pipeline demonstrating compensation patterns
 - **Middleware Pattern**: Composable cross-cutting concerns (retry, timeout, circuit breaker, logging)
 - **Error Classification**: Distinguish transient vs permanent errors for intelligent retry logic
-- **Full Observability**: Structured logging, Prometheus metrics, OpenTelemetry tracing
-- **Flexible Backend**: Support for SQLite and in-memory backends
-- **Comprehensive Testing**: Integration tests with in-memory backend for fast, deterministic tests
+- **OTLP-Based Observability**: OpenTelemetry Protocol receiver for persistent telemetry, queryable via SQL
+- **SQLite Persistence**: All data stored persistently for audit trails and analysis
+- **Comprehensive Testing**: Integration tests with temporary SQLite for deterministic testing
 - **Graceful Shutdown**: Proper signal handling and resource cleanup
 - **Horizontal Scaling**: Worker-only mode for distributed deployments
 
@@ -119,8 +119,7 @@ app:
   port: 8080
 
 backend:
-  type: sqlite  # or 'memory'
-  sqliteFile: data/orchestration.db
+  sqliteFile: data/orchestration.db  # Only SQLite is supported
 
 observability:
   logLevel: debug
@@ -130,7 +129,7 @@ observability:
 
 2. **Environment variables** (override YAML):
 ```bash
-APP_BACKEND_TYPE=memory
+APP_BACKEND_SQLITE_FILE=/var/log/orchestrator/execution.db
 APP_LOG_LEVEL=info
 APP_TRACING_ENABLED=true
 ```
