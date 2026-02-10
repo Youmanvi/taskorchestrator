@@ -5,8 +5,8 @@ import (
 	"math"
 	"time"
 
-	"github.com/vihan/taskorchestrator/internal/infrastructure/observability"
-	"github.com/vihan/taskorchestrator/internal/pkg/errors"
+	"github.com/Youmanvi/taskorchestrator/internal/infrastructure/observability"
+	"github.com/Youmanvi/taskorchestrator/internal/pkg/errors"
 )
 
 // RetryPolicy defines the retry strategy
