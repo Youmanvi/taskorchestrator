@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 
 	"github.com/shopspring/decimal"
-	"github.com/vihan/taskorchestrator/internal/pkg/errors"
+	"github.com/Youmanvi/taskorchestrator/internal/pkg/errors"
 )
 
 // VerifyPaymentInput is the input for verifying a payment
