@@ -9,7 +9,7 @@ import (
 	"go.opentelemetry.io/otel/sdk/resource"
 	"go.opentelemetry.io/otel/sdk/trace"
 	semconv "go.opentelemetry.io/otel/semconv/v1.24.0"
-	"github.com/vihan/taskorchestrator/internal/infrastructure/config"
+	"github.com/Youmanvi/taskorchestrator/internal/infrastructure/config"
 )
 
 // InitializeTracing sets up OpenTelemetry tracing with Zipkin exporter
