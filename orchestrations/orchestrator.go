@@ -6,7 +6,7 @@ import (
 	"github.com/microsoft/durabletask-go/task"
 
 	"taskorchestrator/activities"
-) 1
+)
 
 // OrchestrationInput represents input to the orchestrator
 type OrchestrationInput struct {
@@ -15,11 +15,11 @@ type OrchestrationInput struct {
 
 // OrchestrationOutput represents output from the orchestrator
 type OrchestrationOutput struct {
-	TotalItems   int          `json:"total_items"`
-	SuccessCount int          `json:"success_count"`
-	FailureCount int          `json:"failure_count"`
+	TotalItems   int           `json:"total_items"`
+	SuccessCount int           `json:"success_count"`
+	FailureCount int           `json:"failure_count"`
 	Results      []interface{} `json:"results"`
-	Errors       []string     `json:"errors"`
+	Errors       []string      `json:"errors"`
 }
 
 // SequenceOrchestrator orchestrates a sequence of activities
