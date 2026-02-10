@@ -6,7 +6,7 @@ import (
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"github.com/vihan/taskorchestrator/internal/pkg/errors"
+	"github.com/Youmanvi/taskorchestrator/internal/pkg/errors"
 )
 
 // gRPC status codes that should be treated as transient/retryable
