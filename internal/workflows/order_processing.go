@@ -6,10 +6,10 @@ import (
 
 	"github.com/microsoft/durabletask-go/api"
 	"github.com/shopspring/decimal"
-	"github.com/vihan/taskorchestrator/internal/activities/inventory"
-	"github.com/vihan/taskorchestrator/internal/activities/notification"
-	"github.com/vihan/taskorchestrator/internal/activities/payment"
-	"github.com/vihan/taskorchestrator/internal/domain"
+	"github.com/Youmanvi/taskorchestrator/internal/activities/inventory"
+	"github.com/Youmanvi/taskorchestrator/internal/activities/notification"
+	"github.com/Youmanvi/taskorchestrator/internal/activities/payment"
+	"github.com/Youmanvi/taskorchestrator/internal/domain"
 )
 
 // OrderProcessingInput is the input to the order processing orchestrator
