@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/sony/gobreaker"
-	"github.com/vihan/taskorchestrator/internal/pkg/errors"
+	"github.com/Youmanvi/taskorchestrator/internal/pkg/errors"
 )
 
 // WithCircuitBreaker returns a middleware that protects activity execution with a circuit breaker
