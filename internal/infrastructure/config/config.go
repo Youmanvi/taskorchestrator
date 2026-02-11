@@ -52,7 +52,6 @@ func DefaultConfig() *Config {
 			Timeout: 30 * time.Second,
 		},
 		Backend: BackendConfig{
-			Type:          "sqlite",
 			SQLiteFile:    "data/orchestration.db",
 			MaxConnection: 25,
 		},
