@@ -4,8 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/microsoft/durabletask-go/api"
-	"github.com/shopspring/decimal"
+	"github.com/microsoft/durabletask-go/task"
 	"github.com/Youmanvi/taskorchestrator/internal/activities/inventory"
 	"github.com/Youmanvi/taskorchestrator/internal/activities/notification"
 	"github.com/Youmanvi/taskorchestrator/internal/activities/payment"
@@ -28,9 +27,9 @@ type OrderProcessingOutput struct {
 }
 
 // OrderProcessingOrchestrator orchestrates the order processing workflow
-func OrderProcessingOrchestrator(ctx *api.OrchestrationContext, input []byte) ([]byte, error) {
+func OrderProcessingOrchestrator(ctx *task.OrchestrationContext) (any, error) {
 	var inp OrderProcessingInput
-	if err := json.Unmarshal(input, &inp); err != nil {
+	if err := ctx.GetInput(&inp); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal order processing input: %w", err)
 	}
 
@@ -46,7 +45,7 @@ func OrderProcessingOrchestrator(ctx *api.OrchestrationContext, input []byte) ([
 	}
 	checkInputBytes, _ := json.Marshal(checkInput)
 
-	checkResult := ctx.CallActivity("inventory:check", api.WithActivityInput(checkInputBytes))
+	checkResult := ctx.CallActivity("inventory:check", task.WithActivityInput(checkInputBytes))
 	var checkOutput inventory.CheckAvailabilityOutput
 	if err := checkResult.Await(&checkOutput); err != nil {
 		output.Status = "failed"
@@ -67,7 +66,7 @@ func OrderProcessingOrchestrator(ctx *api.OrchestrationContext, input []byte) ([
 	}
 	reserveInputBytes, _ := json.Marshal(reserveInput)
 
-	reserveResult := ctx.CallActivity("inventory:reserve", api.WithActivityInput(reserveInputBytes))
+	reserveResult := ctx.CallActivity("inventory:reserve", task.WithActivityInput(reserveInputBytes))
 	var reserveOutput inventory.ReserveInventoryOutput
 	if err := reserveResult.Await(&reserveOutput); err != nil {
 		output.Status = "failed"
@@ -86,7 +85,7 @@ func OrderProcessingOrchestrator(ctx *api.OrchestrationContext, input []byte) ([
 	}
 	chargeInputBytes, _ := json.Marshal(chargeInput)
 
-	chargeResult := ctx.CallActivity("payment:charge", api.WithActivityInput(chargeInputBytes))
+	chargeResult := ctx.CallActivity("payment:charge", task.WithActivityInput(chargeInputBytes))
 	var chargeOutput payment.ChargePaymentOutput
 	if err := chargeResult.Await(&chargeOutput); err != nil {
 		// Payment failed - compensate by releasing inventory
@@ -94,7 +93,7 @@ func OrderProcessingOrchestrator(ctx *api.OrchestrationContext, input []byte) ([
 			ReservationID: output.ReservationID,
 		}
 		releaseInputBytes, _ := json.Marshal(releaseInput)
-		ctx.CallActivity("inventory:release", api.WithActivityInput(releaseInputBytes)).Await(nil)
+		ctx.CallActivity("inventory:release", task.WithActivityInput(releaseInputBytes)).Await(nil)
 
 		output.Status = "failed"
 		output.Message = fmt.Sprintf("payment processing failed: %v", err)
@@ -111,7 +110,7 @@ func OrderProcessingOrchestrator(ctx *api.OrchestrationContext, input []byte) ([
 	}
 	emailInputBytes, _ := json.Marshal(emailInput)
 
-	emailResult := ctx.CallActivity("notification:order_confirmation", api.WithActivityInput(emailInputBytes))
+	emailResult := ctx.CallActivity("notification:order_confirmation", task.WithActivityInput(emailInputBytes))
 	var emailOutput notification.EmailNotificationOutput
 	if err := emailResult.Await(&emailOutput); err != nil {
 		// Email failure is non-critical, log but continue
