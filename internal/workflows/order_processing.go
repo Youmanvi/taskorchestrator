@@ -50,13 +50,13 @@ func OrderProcessingOrchestrator(ctx *task.OrchestrationContext) (any, error) {
 	if err := checkResult.Await(&checkOutput); err != nil {
 		output.Status = "failed"
 		output.Message = fmt.Sprintf("inventory check failed: %v", err)
-		return marshalOutput(&output)
+		return output, nil
 	}
 
 	if !checkOutput.Available {
 		output.Status = "failed"
 		output.Message = "items not available"
-		return marshalOutput(&output)
+		return output, nil
 	}
 
 	// Step 2: Reserve inventory
@@ -71,7 +71,7 @@ func OrderProcessingOrchestrator(ctx *task.OrchestrationContext) (any, error) {
 	if err := reserveResult.Await(&reserveOutput); err != nil {
 		output.Status = "failed"
 		output.Message = fmt.Sprintf("inventory reservation failed: %v", err)
-		return marshalOutput(&output)
+		return output, nil
 	}
 
 	output.ReservationID = reserveOutput.ReservationID
