@@ -1,12 +1,12 @@
 package workflows
 
 import (
-	"github.com/microsoft/durabletask-go/api"
+	"github.com/microsoft/durabletask-go/task"
 )
 
 // NewWorkflowRegistry creates and registers all workflow orchestrators
-func NewWorkflowRegistry() *api.TaskOrchestratorRegistry {
-	registry := api.NewTaskOrchestratorRegistry()
+func NewWorkflowRegistry() *task.TaskRegistry {
+	registry := task.NewTaskRegistry()
 
 	registry.AddOrchestratorN("order_processing", OrderProcessingOrchestrator)
 
