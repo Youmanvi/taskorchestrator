@@ -27,10 +27,13 @@ func InitializeTracing(ctx context.Context, cfg *config.ObservabilityConfig, app
 		return nil, fmt.Errorf("failed to create Zipkin exporter: %w", err)
 	}
 
-	res := resource.NewWithAttributes(
+	res, err := resource.New(
 		ctx,
-		semconv.ServiceNameKey.String(appName),
+		resource.WithAttributes(semconv.ServiceNameKey.String(appName)),
 	)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create resource: %w", err)
+	}
 
 	tp := trace.NewTracerProvider(
 		trace.WithBatcher(exporter),
@@ -49,6 +52,6 @@ func ShutdownTracing(ctx context.Context, tp *trace.TracerProvider) error {
 }
 
 // GetTracer returns a tracer for the given name
-func GetTracer(name string) trace.Tracer {
+func GetTracer(name string) interface{} {
 	return otel.Tracer(name)
 }
