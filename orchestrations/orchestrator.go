@@ -5,7 +5,7 @@ import (
 
 	"github.com/microsoft/durabletask-go/task"
 
-	"github.com/Youmanvi/taskorchestrator/activities"
+	"github.com/Youmanvi/taskorchestrator/internal/activities"
 )
 
 // OrchestrationInput represents input to the orchestrator
