@@ -17,7 +17,6 @@ var transientGRPCCodes = map[codes.Code]bool{
 	codes.Aborted:             true,  // 10 - Request aborted (transaction conflicts)
 	codes.DeadlineExceeded:    true,  // 4 - Request deadline exceeded
 	codes.Internal:            true,  // 13 - Internal server error (transient)
-	codes.Unavailable:         true,  // 14 - Service unavailable
 	codes.Unknown:             true,  // 2 - Unknown errors (might be transient)
 }
 

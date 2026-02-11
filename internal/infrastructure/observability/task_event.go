@@ -48,7 +48,6 @@ func NewLogEvent(traceID, spanID string, timestamp time.Time, message string, se
 		Message:    message,
 		Severity:   severity,
 		Attributes: attributes,
-		EventType:  "log",
 	}
 
 	// Extract orchestration_id from attributes if present
