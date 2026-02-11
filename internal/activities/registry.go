@@ -3,7 +3,7 @@ package activities
 import (
 	"time"
 
-	"github.com/microsoft/durabletask-go/api"
+	"github.com/microsoft/durabletask-go/task"
 	"github.com/Youmanvi/taskorchestrator/internal/activities/inventory"
 	"github.com/Youmanvi/taskorchestrator/internal/activities/notification"
 	"github.com/Youmanvi/taskorchestrator/internal/activities/payment"
@@ -23,8 +23,8 @@ type ActivityDeps struct {
 }
 
 // NewActivityRegistry creates and registers all activities with middleware
-func NewActivityRegistry(deps *ActivityDeps) *api.TaskActivityRegistry {
-	registry := api.NewTaskActivityRegistry()
+func NewActivityRegistry(deps *ActivityDeps) *task.TaskRegistry {
+	registry := task.NewTaskRegistry()
 
 	// Payment activities
 	registerActivity(registry, "payment:charge",
@@ -72,7 +72,7 @@ func NewActivityRegistry(deps *ActivityDeps) *api.TaskActivityRegistry {
 }
 
 // registerActivity registers an activity with middleware
-func registerActivity(registry *api.TaskActivityRegistry, name string, activity middleware.ActivityFunc, deps *ActivityDeps) {
+func registerActivity(registry *task.TaskRegistry, name string, activity middleware.ActivityFunc, deps *ActivityDeps) {
 	// Apply middleware chain (order matters - innermost to outermost)
 	wrapped := middleware.ApplyMiddleware(
 		activity,
@@ -83,5 +83,18 @@ func registerActivity(registry *api.TaskActivityRegistry, name string, activity 
 		middleware.WithRetry(deps.Logger, deps.RetryPolicy),
 	)
 
-	registry.AddActivityN(name, wrapped)
+	// Adapt middleware.ActivityFunc to task.Activity
+	taskActivity := func(ctx task.ActivityContext) (any, error) {
+		// Serialize input
+		var input []byte
+		if err := ctx.GetInput(&input); err != nil {
+			return nil, err
+		}
+
+		// Call the middleware-wrapped activity
+		output, err := wrapped(ctx.Context(), input)
+		return output, err
+	}
+
+	registry.AddActivityN(name, taskActivity)
 }

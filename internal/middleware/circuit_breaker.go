@@ -33,7 +33,7 @@ func WithCircuitBreaker(name string, threshold float64, timeout time.Duration) A
 
 			if err != nil {
 				// Check if it's a circuit breaker error
-				if err == gobreaker.ErrOpenCircuit {
+				if err == gobreaker.ErrOpenState {
 					return nil, errors.NewTransientError(
 						"CIRCUIT_BREAKER_OPEN",
 						fmt.Sprintf("circuit breaker open for activity: %s", name),
