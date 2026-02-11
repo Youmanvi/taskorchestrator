@@ -37,7 +37,7 @@ type OrchestrationOutput struct {
 // - Add conditional branching based on results
 // - Change parallelization strategy (parallel vs sequential)
 // - Add retry logic for failed activities
-func SequenceOrchestrator(ctx task.OrchestrationContext) (interface{}, error) {
+func SequenceOrchestrator(ctx *task.OrchestrationContext) (interface{}, error) {
 	var input OrchestrationInput
 	if err := ctx.GetInput(&input); err != nil {
 		return nil, fmt.Errorf("failed to deserialize orchestration input: %w", err)
