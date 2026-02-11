@@ -97,7 +97,7 @@ func OrderProcessingOrchestrator(ctx *task.OrchestrationContext) (any, error) {
 
 		output.Status = "failed"
 		output.Message = fmt.Sprintf("payment processing failed: %v", err)
-		return marshalOutput(&output)
+		return output, nil
 	}
 
 	output.PaymentID = chargeOutput.PaymentID
@@ -121,14 +121,5 @@ func OrderProcessingOrchestrator(ctx *task.OrchestrationContext) (any, error) {
 	output.Status = "confirmed"
 	output.Message = "order processed successfully"
 
-	return marshalOutput(&output)
-}
-
-// marshalOutput marshals the output struct to JSON
-func marshalOutput(output *OrderProcessingOutput) ([]byte, error) {
-	result, err := json.Marshal(output)
-	if err != nil {
-		return nil, fmt.Errorf("failed to marshal output: %w", err)
-	}
-	return result, nil
+	return output, nil
 }
